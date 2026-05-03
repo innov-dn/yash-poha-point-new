@@ -1,0 +1,23 @@
+{
+  "name": "yash-poha-point",
+  "version": "1.0.0",
+  "description": "Yash Poha Point - Best Poha in Gonglai, MP",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innov-dn/yash-poha-point-new.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/innov-dn/yash-poha-point-new/issues"
+  },
+  "homepage": "https://github.com/innov-dn/yash-poha-point-new#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
