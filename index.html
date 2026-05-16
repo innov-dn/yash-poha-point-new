@@ -619,55 +619,88 @@
       .g-item { height:220px; }
     }
 
-        .reload-popup {
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(0,0,0,.65);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity .3s ease, visibility .3s ease;
+    .reload-popup {
+      position:fixed; inset:0; z-index:3000;
+      display:flex; align-items:center; justify-content:center;
+      padding:20px; background:rgba(0,0,0,.68);
+      opacity:0; visibility:hidden;
+      transition:opacity .3s ease, visibility .3s ease;
     }
-
-    .reload-popup.show {
-      opacity: 1;
-      visibility: visible;
-    }
+    .reload-popup.show { opacity:1; visibility:visible; }
 
     .reload-popup-card {
-      position: relative;
-      width: min(92vw, 520px);
-      background: #fff;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+      position:relative; width:min(94vw,430px);
+      background:#fff; border-radius:18px; overflow:hidden;
+      box-shadow:0 24px 80px rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.25);
     }
-
-    .reload-popup-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
     .reload-popup-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(0,0,0,.65);
-      color: #fff;
-      font-size: 1.6rem;
-      line-height: 1;
-      cursor: pointer;
-      z-index: 1;
+      position:absolute; top:10px; right:10px; z-index:4;
+      width:38px; height:38px; border:none; border-radius:50%;
+      background:rgba(0,0,0,.65); color:#fff;
+      font-size:1.6rem; line-height:1; cursor:pointer;
+      transition:var(--ease);
     }
+    .reload-popup-close:hover { background:var(--primary); transform:rotate(90deg); }
+
+    .coupon-shell {
+      padding:26px; text-align:center;
+      background:linear-gradient(145deg,#fff,var(--cream));
+    }
+    .coupon-label {
+      display:inline-block; padding:5px 14px; margin-bottom:10px;
+      border-radius:999px; background:rgba(255,107,0,.1);
+      color:var(--primary); font-size:.72rem; font-weight:800;
+      letter-spacing:2px; text-transform:uppercase;
+    }
+    .coupon-shell h3 {
+      font-family:'Playfair Display',serif;
+      color:var(--dark); font-size:1.55rem; line-height:1.2;
+      margin-bottom:16px;
+    }
+    .coupon-stage {
+      position:relative; min-height:230px; overflow:hidden;
+      border-radius:16px; border:1px dashed rgba(255,107,0,.35);
+      background:
+        radial-gradient(circle at 20% 20%,rgba(255,217,61,.35),transparent 32%),
+        linear-gradient(135deg,#FFF8F0,#FFE0B2);
+      display:grid; place-items:center;
+    }
+    .coupon-reward { padding:24px 18px; }
+    .coupon-kicker {
+      display:block; color:var(--text-light);
+      font-size:.75rem; font-weight:700; letter-spacing:1.5px;
+      text-transform:uppercase; margin-bottom:7px;
+    }
+    .coupon-reward strong {
+      display:block; color:var(--primary); font-size:1.8rem;
+      font-weight:800; line-height:1.15; margin-bottom:10px;
+    }
+    .coupon-reward small {
+      display:block; color:var(--text);
+      font-size:.82rem; line-height:1.5; margin-bottom:14px;
+    }
+    .coupon-code {
+      display:inline-block; padding:8px 14px; border-radius:10px;
+      background:#fff; color:var(--dark); border:1px solid var(--border);
+      font-weight:800; letter-spacing:1.5px;
+    }
+    #scratchCanvas {
+      position:absolute; inset:0; width:100%; height:100%;
+      cursor:crosshair; touch-action:none; z-index:2;
+    }
+    .coupon-status {
+      min-height:22px; color:var(--text-light);
+      font-size:.82rem; margin:14px 0 0;
+    }
+    .coupon-redeem {
+      display:none; align-items:center; justify-content:center; gap:8px;
+      width:100%; margin-top:16px; padding:14px 18px;
+      border-radius:50px; background:#25D366; color:#fff;
+      font-weight:800; transition:var(--ease);
+    }
+    .coupon-redeem.show { display:inline-flex; }
+    .coupon-redeem:hover { background:#1ebe5d; transform:translateY(-3px); }
   </style>
 </head>
 <body>
@@ -1226,18 +1259,32 @@
   </div>
 </footer>
 
-<!-- RELOAD IMAGE POPUP -->
+<!-- DAILY SCRATCH COUPON POPUP -->
 <div class="reload-popup" id="reloadPopup" aria-hidden="true">
   <div class="reload-popup-card" role="dialog" aria-modal="true">
     <button class="reload-popup-close" id="reloadPopupClose" aria-label="Close popup">
       &times;
     </button>
 
-    <img
-      src="https://blogger.googleusercontent.com/img/a/AVvXsEjEOR8TtJUz6rXvrxJMIp_6rwcyNsOX6s412Hk_-ADzx9loEZ3oIsultq_gZpz6se_jKQHgQyeWuNuvpJ8QEHnnd3TkBtUMmeGlbYAXqTLqJrNLYUD--Pqbv0EKQfoVU7RfGq1g0KdoS0nYAj_Zs0cnNp1cCslkqebO-lEMHQnqPqOArsplYIWuPU9kjHE=w512-h517"
-      alt="Yash Poha Point Offer"
-      onerror="this.style.display='none'"
-    />
+    <div class="coupon-shell">
+      <span class="coupon-label">Daily Reward</span>
+      <h3>Yash Poha Point Coupon</h3>
+
+      <div class="coupon-stage" id="couponStage">
+        <div class="coupon-reward">
+          <span class="coupon-kicker">Today's reward</span>
+          <strong id="couponRewardText">Fresh Poha Bonus</strong>
+          <small id="couponTerms">Valid today only.</small>
+          <span class="coupon-code" id="couponCode">YPP-0000</span>
+        </div>
+        <canvas id="scratchCanvas" aria-label="Scratch coupon"></canvas>
+      </div>
+
+      <p class="coupon-status" id="couponStatus">One coupon per device today.</p>
+      <a href="#" class="coupon-redeem" id="couponRedeem" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i> Redeem on WhatsApp
+      </a>
+    </div>
   </div>
 </div>
 
@@ -1340,19 +1387,182 @@
     });
   });
 
-  /* 8. RELOAD IMAGE POPUP */
+  /* 8. DAILY SCRATCH COUPON */
   window.addEventListener('load', () => {
     const popup = document.getElementById('reloadPopup');
     const closeBtn = document.getElementById('reloadPopupClose');
+    const stage = document.getElementById('couponStage');
+    const canvas = document.getElementById('scratchCanvas');
+    const rewardText = document.getElementById('couponRewardText');
+    const couponTerms = document.getElementById('couponTerms');
+    const couponCode = document.getElementById('couponCode');
+    const couponStatus = document.getElementById('couponStatus');
+    const couponRedeem = document.getElementById('couponRedeem');
 
-    if (!popup || !closeBtn) return;
+    if (!popup || !closeBtn || !stage || !canvas || !rewardText || !couponTerms || !couponCode || !couponStatus || !couponRedeem) return;
+
+    const COUPON_KEY = 'yppDailyScratchCoupon';
+    const SCRATCH_REQUIRED = 75;
+    const WHATSAPP_NUMBER = '916265108273';
+    const rewards = [
+      { name: 'Free Extra Sev', prefix: 'SEV', terms: 'Valid today with any poha order.' },
+      { name: 'Rs. 5 OFF', prefix: 'OFF5', terms: 'Valid today on minimum 3 plates of poha.' },
+      { name: 'Free Delivery', prefix: 'DEL', terms: 'Valid today on orders of 5+ plates.' },
+      { name: 'Free 1 Plate Poha', prefix: 'ZERO', terms: 'Valid today on orders of 10+ plates.' },
+      { name: 'Birthday Bonus', prefix: 'BDAY', terms: 'Show valid birth date proof with minimum 5 plates order.' },
+      { name: 'OOPS! Better Luck Next Time', prefix: 'TRY', terms: 'No reward on this coupon. Try again tomorrow.', redeemable: false }
+    ];
+
+    function getIndiaDateKey() {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).formatToParts(new Date());
+      const date = {};
+      parts.forEach(part => { date[part.type] = part.value; });
+      return `${date.year}-${date.month}-${date.day}`;
+    }
+
+    function readCoupon() {
+      try {
+        return JSON.parse(localStorage.getItem(COUPON_KEY));
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function saveCoupon(coupon) {
+      try {
+        localStorage.setItem(COUPON_KEY, JSON.stringify(coupon));
+      } catch (err) {
+        // Coupon still works for this visit if storage is unavailable.
+      }
+    }
+
+    function createCoupon(today) {
+      const reward = rewards[Math.floor(Math.random() * rewards.length)];
+      return {
+        date: today,
+        reward: reward.name,
+        terms: reward.terms,
+        code: `YPP-${reward.prefix}-${Math.floor(1000 + Math.random() * 9000)}`,
+        redeemable: reward.redeemable !== false,
+        scratched: false
+      };
+    }
+
+    function getTodayCoupon() {
+      const today = getIndiaDateKey();
+      const saved = readCoupon();
+
+      if (saved && saved.date === today && saved.code) {
+        return saved;
+      }
+
+      const coupon = createCoupon(today);
+      saveCoupon(coupon);
+      return coupon;
+    }
+
+    const coupon = getTodayCoupon();
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
     popup.classList.add('show');
     popup.setAttribute('aria-hidden', 'false');
+    rewardText.textContent = coupon.reward;
+    couponTerms.textContent = coupon.terms;
+    couponCode.textContent = coupon.code;
+    couponStatus.textContent = coupon.scratched ? "Today's coupon already revealed." : 'One coupon per device today.';
+    couponRedeem.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Yash Poha Point, I got coupon ${coupon.code}: ${coupon.reward}. I want to redeem it today.`)}`;
 
     function closePopup() {
       popup.classList.remove('show');
       popup.setAttribute('aria-hidden', 'true');
+    }
+
+    function showRedeem() {
+      if (coupon.redeemable === false) {
+        couponRedeem.classList.remove('show');
+        couponStatus.textContent = 'Try again tomorrow for a fresh coupon.';
+        return;
+      }
+
+      couponRedeem.classList.add('show');
+      couponStatus.textContent = "Today's coupon is ready to redeem.";
+    }
+
+    function revealCoupon() {
+      if (!coupon.scratched) {
+        coupon.scratched = true;
+        saveCoupon(coupon);
+      }
+      canvas.style.display = 'none';
+      showRedeem();
+    }
+
+    function drawScratchCover(width, height) {
+      const cover = ctx.createLinearGradient(0, 0, width, height);
+      cover.addColorStop(0, '#FF6B00');
+      cover.addColorStop(.55, '#F5A623');
+      cover.addColorStop(1, '#FFD93D');
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = cover;
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(255,255,255,.14)';
+      for (let x = -40; x < width + 40; x += 44) {
+        ctx.beginPath();
+        ctx.arc(x, height * .24, 18, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#fff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '800 25px Poppins, sans-serif';
+      ctx.fillText('SCRATCH', width / 2, height / 2 - 8);
+      ctx.font = '600 12px Poppins, sans-serif';
+      ctx.fillText('YASH POHA POINT', width / 2, height / 2 + 24);
+    }
+
+    function setupScratchCanvas() {
+      const rect = stage.getBoundingClientRect();
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+      canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+      canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      drawScratchCover(rect.width, rect.height);
+    }
+
+    function getScratchPercent() {
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let cleared = 0;
+      let total = 0;
+
+      for (let i = 3; i < pixels.length; i += 32) {
+        total++;
+        if (pixels[i] < 20) cleared++;
+      }
+
+      return total ? (cleared / total) * 100 : 0;
+    }
+
+    function scratchAt(e) {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 30, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     }
 
     closeBtn.addEventListener('click', closePopup);
@@ -1363,6 +1573,41 @@
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closePopup();
+    });
+
+    if (!ctx || coupon.scratched) {
+      revealCoupon();
+      return;
+    }
+
+    requestAnimationFrame(setupScratchCanvas);
+
+    let isScratching = false;
+    let lastCheck = 0;
+
+    canvas.addEventListener('pointerdown', e => {
+      isScratching = true;
+      if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
+      scratchAt(e);
+    });
+
+    canvas.addEventListener('pointermove', e => {
+      if (!isScratching) return;
+
+      scratchAt(e);
+      const now = Date.now();
+      if (now - lastCheck > 180) {
+        lastCheck = now;
+        if (getScratchPercent() >= SCRATCH_REQUIRED) revealCoupon();
+      }
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      canvas.addEventListener(type, () => {
+        if (!isScratching) return;
+        isScratching = false;
+        if (getScratchPercent() >= SCRATCH_REQUIRED) revealCoupon();
+      });
     });
   });
 </script>
