@@ -618,6 +618,56 @@
       .gallery-grid { grid-template-columns:1fr; }
       .g-item { height:220px; }
     }
+
+        .reload-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.65);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+
+    .reload-popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .reload-popup-card {
+      position: relative;
+      width: min(92vw, 520px);
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+
+    .reload-popup-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .reload-popup-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0,0,0,.65);
+      color: #fff;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
@@ -1176,6 +1226,21 @@
   </div>
 </footer>
 
+<!-- RELOAD IMAGE POPUP -->
+<div class="reload-popup" id="reloadPopup" aria-hidden="true">
+  <div class="reload-popup-card" role="dialog" aria-modal="true">
+    <button class="reload-popup-close" id="reloadPopupClose" aria-label="Close popup">
+      &times;
+    </button>
+
+    <img
+      src="https://thumbs.dreamstime.com/b/flattened-rice-commonly-known-as-poha-rice-which-flattened-flat-light-dry-flakes-originating-indian-147197608.jpg"
+      alt="Yash Poha Point Offer"
+      onerror="this.style.display='none'"
+    />
+  </div>
+</div>
+
 
 <!-- ======================================================
      FLOATING CALL BUTTON
@@ -1272,6 +1337,32 @@
       this.style.display = 'none';
       const emoji = this.parentElement.querySelector('.card-emoji');
       if (emoji) emoji.style.display = 'flex';
+    });
+  });
+
+  /* 8. RELOAD IMAGE POPUP */
+  window.addEventListener('load', () => {
+    const popup = document.getElementById('reloadPopup');
+    const closeBtn = document.getElementById('reloadPopupClose');
+
+    if (!popup || !closeBtn) return;
+
+    popup.classList.add('show');
+    popup.setAttribute('aria-hidden', 'false');
+
+    function closePopup() {
+      popup.classList.remove('show');
+      popup.setAttribute('aria-hidden', 'true');
+    }
+
+    closeBtn.addEventListener('click', closePopup);
+
+    popup.addEventListener('click', e => {
+      if (e.target === popup) closePopup();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closePopup();
     });
   });
 </script>
